@@ -1,3 +1,4 @@
+// home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,13 +10,13 @@ import '../../services/firestore_service.dart';
 import '../../models/leaderboard_entry_model.dart';
 
 import '../widgets/loading_overlay.dart';
-import '../widgets/shimmer_block.dart';
+import '../widgets/shimmer_block.dart' as shimmer; // ✅ ALIAS pour éviter conflit "ShimmerBlock"
 
 import 'login_screen.dart';
 import 'leaderboard_screen.dart';
 import 'quiz_screen.dart';
 
-/// HomeScreen complet avec intégration du QuizHub (API / Local / Smart / Firestore)
+/// HomeScreen complet avec QuizHub (API / Local / Smart / Firestore)
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -26,15 +27,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  // Petit boot delay pour laisser un shimmer agréable (UX)
+  // Petit boot delay (UX shimmer)
   late final Future<void> _bootFuture =
   Future<void>.delayed(const Duration(milliseconds: 650));
 
   bool _startedDashboardStream = false;
 
-  void _snack(String msg) {
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  void _snackSafe(BuildContext context, String msg) {
+    // ✅ Évite "Looking up a deactivated widget's ancestor is unsafe"
+    if (!context.mounted) return;
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    messenger?.showSnackBar(SnackBar(content: Text(msg)));
   }
 
   String _displayName({required String? name, required String? email}) {
@@ -53,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // Pas connecté -> Login (sécurité)
     if (user == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const LoginScreen()),
               (_) => false,
@@ -65,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!_startedDashboardStream) {
       _startedDashboardStream = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
         context.read<DashboardProvider>().startForUser(user.uid);
       });
     }
@@ -92,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() => _selectedIndex = i);
                 Navigator.of(context).pop();
               },
-              onLogout: _logout,
+              onLogout: () => _logout(context),
             ),
 
             appBar: AppBar(
@@ -131,8 +136,10 @@ class _HomeScreenState extends State<HomeScreen> {
               actions: [
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
-                  child:
-                  _UserAvatar(photoUrl: user.photoUrl, fallbackText: name),
+                  child: _UserAvatar(
+                    photoUrl: user.photoUrl,
+                    fallbackText: name,
+                  ),
                 ),
               ],
             ),
@@ -147,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     userEmail: user.email ?? "-",
                     photoUrl: user.photoUrl,
                     onSelect: (i) => setState(() => _selectedIndex = i),
-                    onLogout: _logout,
+                    onLogout: () => _logout(context),
                   ),
 
                 // Contenu principal
@@ -182,14 +189,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<void> _logout() async {
+  Future<void> _logout(BuildContext context) async {
     await context.read<AuthProvider>().signOut();
     final err = context.read<AuthProvider>().error;
 
-    if (!mounted) return;
+    if (!context.mounted) return;
 
     if (err != null) {
-      _snack(err);
+      _snackSafe(context, err);
       return;
     }
 
@@ -211,7 +218,6 @@ class _HomeScreenState extends State<HomeScreen> {
       case 0:
         return _OverviewPage(key: key, userName: userName);
       case 1:
-      // ✅ QUIZ HUB avec Firestore
         return const _QuizHubPage(key: ValueKey("quizhub"));
       case 2:
         return _LeaderboardHubPage(key: key, userId: userId);
@@ -251,15 +257,16 @@ class _OverviewPage extends StatelessWidget {
           _GradientHero(userName: userName),
           const SizedBox(height: 14),
 
-          // KPI Shimmer si loading
+          // KPI shimmer si loading
           if (dash.isLoading) ...[
             Wrap(
               spacing: 12,
               runSpacing: 12,
-              children: const [
-                ShimmerBlock(height: 84, width: 260),
-                ShimmerBlock(height: 84, width: 260),
-                ShimmerBlock(height: 84, width: 260),
+              children: [
+                // ✅ pas const ici (évite "const list literal must be constants")
+                shimmer.ShimmerBlock(height: 84, width: 260),
+                shimmer.ShimmerBlock(height: 84, width: 260),
+                shimmer.ShimmerBlock(height: 84, width: 260),
               ],
             ),
           ] else ...[
@@ -321,6 +328,8 @@ class _OverviewPage extends StatelessWidget {
                 final quiz = context.read<QuizProvider>();
                 await quiz.startApiQuiz();
 
+                if (!context.mounted) return;
+
                 if (quiz.error != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(quiz.error!)),
@@ -374,18 +383,18 @@ class _QuizHubPage extends StatelessWidget {
       ) async {
     final quiz = context.read<QuizProvider>();
 
-    // Lance le mode sélectionné
     await starter();
 
-    // Erreur provider -> snack + stop
+    if (!context.mounted) return;
+
     if (quiz.error != null) {
+      // ✅ context encore monté -> safe
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(quiz.error!)),
       );
       return;
     }
 
-    // OK -> écran quiz
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => const QuizScreen()),
     );
@@ -437,7 +446,7 @@ class _QuizHubPage extends StatelessWidget {
           ),
           const SizedBox(height: 12),
 
-          // ✅ 4e option Firestore (questions admin)
+          // 4e option Firestore (questions admin)
           _QuizModeCard(
             icon: Icons.cloud_done_outlined,
             title: "Quiz Firestore (Admin)",
@@ -499,8 +508,7 @@ class _LeaderboardHubPage extends StatelessWidget {
                   subtitle: const Text("Temps réel (Firestore)."),
                   onTap: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (_) => const LeaderboardScreen()),
+                      MaterialPageRoute(builder: (_) => const LeaderboardScreen()),
                     );
                   },
                 ),
@@ -871,7 +879,7 @@ class _DashboardRail extends StatelessWidget {
 }
 
 //////////////////////////////////////////////////////////////
-// SHIMMER
+// SHIMMER (BOOT)
 //////////////////////////////////////////////////////////////
 
 class _DashboardShimmer extends StatelessWidget {
@@ -882,16 +890,17 @@ class _DashboardShimmer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: ListView(
-        children: const [
-          ShimmerBlock(height: 90, width: double.infinity),
-          SizedBox(height: 14),
-          ShimmerBlock(height: 90, width: double.infinity),
-          SizedBox(height: 14),
-          ShimmerBlock(height: 90, width: double.infinity),
-          SizedBox(height: 14),
-          ShimmerBlock(height: 60, width: double.infinity),
-          SizedBox(height: 10),
-          ShimmerBlock(height: 60, width: double.infinity),
+        // ✅ PAS const -> ShimmerBlock pas forcément const
+        children: [
+          shimmer.ShimmerBlock(height: 90, width: double.infinity),
+          const SizedBox(height: 14),
+          shimmer.ShimmerBlock(height: 90, width: double.infinity),
+          const SizedBox(height: 14),
+          shimmer.ShimmerBlock(height: 90, width: double.infinity),
+          const SizedBox(height: 14),
+          shimmer.ShimmerBlock(height: 60, width: double.infinity),
+          const SizedBox(height: 10),
+          shimmer.ShimmerBlock(height: 60, width: double.infinity),
         ],
       ),
     );
