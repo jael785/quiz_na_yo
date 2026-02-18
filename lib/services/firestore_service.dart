@@ -197,6 +197,40 @@ class FirestoreService {
   }
 
   // ---------------------------------------------------------------------------
+  // ✅ USER: CATEGORIES visibles (actives)
+  // ---------------------------------------------------------------------------
+  /// IMPORTANT:
+  /// - Certains anciens docs peuvent ne pas avoir "active"
+  /// - Donc on fait un fallback: (active ?? true)
+  Stream<List<Map<String, dynamic>>> streamActiveCategories() {
+    return _categories
+        .orderBy('name', descending: false)
+        .snapshots()
+        .map((snap) {
+      final out = <Map<String, dynamic>>[];
+      for (final d in snap.docs) {
+        final data = d.data();
+        final isActive = (data['active'] ?? true) as bool;
+        if (!isActive) continue;
+        out.add({'id': d.id, ...data});
+      }
+      return out;
+    });
+  }
+
+  Future<List<Map<String, dynamic>>> fetchActiveCategories() async {
+    final snap = await _categories.orderBy('name', descending: false).get();
+    final out = <Map<String, dynamic>>[];
+    for (final d in snap.docs) {
+      final data = d.data();
+      final isActive = (data['active'] ?? true) as bool;
+      if (!isActive) continue;
+      out.add({'id': d.id, ...data});
+    }
+    return out;
+  }
+
+  // ---------------------------------------------------------------------------
   // ADMIN CRUD: QUESTIONS
   // ---------------------------------------------------------------------------
   Stream<List<Map<String, dynamic>>> streamQuestions({int limit = 300}) {
@@ -267,7 +301,11 @@ class FirestoreService {
     String? categoryId,
     String? difficulty,
   }) async {
-    Query<Map<String, dynamic>> q = _questions.where('active', isEqualTo: true);
+    // ⚠️ Problème classique : si certains docs n'ont pas "active",
+    // where(active==true) retourne 0 résultats pour ces docs.
+    // -> On garde ta logique, mais on la rend robuste:
+    //    On n'utilise PAS where('active'==true) et on filtre côté client.
+    Query<Map<String, dynamic>> q = _questions;
 
     if (categoryId != null && categoryId.trim().isNotEmpty) {
       q = q.where('categoryId', isEqualTo: categoryId.trim());
@@ -285,6 +323,11 @@ class FirestoreService {
 
     for (final doc in snap.docs) {
       final data = doc.data();
+
+      // ✅ fallback si champ absent
+      final isActive = (data['active'] ?? true) as bool;
+      if (!isActive) continue;
+
       out.add(
         QuestionModel.fromFirestore(
           docId: doc.id,

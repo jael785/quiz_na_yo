@@ -1,3 +1,4 @@
+// quiz_provider.dart
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 
@@ -5,6 +6,8 @@ import '../models/question_model.dart';
 import '../services/api_service.dart';
 import '../services/local_question_service.dart';
 import '../services/firestore_service.dart';
+
+enum QuizMode { api, local, firestore }
 
 class QuizProvider extends ChangeNotifier {
   List<QuestionModel> _questions = [];
@@ -22,13 +25,15 @@ class QuizProvider extends ChangeNotifier {
 
   final Stopwatch _stopwatch = Stopwatch();
 
-  // ----------------------------
-  // GETTERS
-  // ----------------------------
-  List<QuestionModel> get questions => _questions;
+  QuizMode? _lastMode;
 
-  QuestionModel? get current =>
-      (_index < _questions.length) ? _questions[_index] : null;
+  // Firestore params
+  int _lastFsLimit = 30;
+  String? _lastFsCategoryId;
+  String? _lastFsDifficulty;
+
+  List<QuestionModel> get questions => _questions;
+  QuestionModel? get current => (_index < _questions.length) ? _questions[_index] : null;
 
   int get index => _index;
   int get total => _questions.length;
@@ -45,10 +50,9 @@ class QuizProvider extends ChangeNotifier {
 
   bool get isFinished => _index >= _questions.length;
 
-  // ----------------------------
-  // MODE 1: API ONLY
-  // ----------------------------
+  // API
   Future<void> startApiQuiz() async {
+    _lastMode = QuizMode.api;
     await _startWithLoader(() async {
       final api = ApiService();
       _questions = await api.fetchQuestions();
@@ -56,10 +60,9 @@ class QuizProvider extends ChangeNotifier {
     }, errorMessage: "Impossible de charger les questions via l'API.");
   }
 
-  // ----------------------------
-  // MODE 2: LOCAL JSON ONLY
-  // ----------------------------
+  // Local
   Future<void> startLocalQuiz() async {
+    _lastMode = QuizMode.local;
     await _startWithLoader(() async {
       final local = LocalQuestionService();
       _questions = await local.loadQuestions();
@@ -67,30 +70,17 @@ class QuizProvider extends ChangeNotifier {
     }, errorMessage: "Impossible de charger les questions locales.");
   }
 
-  // ----------------------------
-  // MODE 3: SMART (API -> fallback JSON)
-  // ----------------------------
-  Future<void> startSmartQuiz() async {
-    await _startWithLoader(() async {
-      try {
-        final api = ApiService();
-        _questions = await api.fetchQuestions();
-      } catch (_) {
-        final local = LocalQuestionService();
-        _questions = await local.loadQuestions();
-      }
-      _prepareQuiz();
-    }, errorMessage: "Impossible de charger les questions (API et local).");
-  }
-
-  // ----------------------------
-  // ✅ MODE 4: FIRESTORE (admin -> users)
-  // ----------------------------
+  // Firestore
   Future<void> startFirestoreQuiz({
     int limit = 30,
     String? categoryId,
     String? difficulty,
   }) async {
+    _lastMode = QuizMode.firestore;
+    _lastFsLimit = limit;
+    _lastFsCategoryId = categoryId;
+    _lastFsDifficulty = difficulty;
+
     await _startWithLoader(() async {
       final fs = FirestoreService();
       _questions = await fs.fetchActiveQuestions(
@@ -102,9 +92,28 @@ class QuizProvider extends ChangeNotifier {
     }, errorMessage: "Impossible de charger les questions Firestore.");
   }
 
-  // ----------------------------
-  // QUIZ LOGIC
-  // ----------------------------
+  // Rejouer
+  Future<void> restartLastQuiz() async {
+    disposeQuiz(clearQuestions: true);
+    final mode = _lastMode ?? QuizMode.api;
+
+    switch (mode) {
+      case QuizMode.api:
+        await startApiQuiz();
+        break;
+      case QuizMode.local:
+        await startLocalQuiz();
+        break;
+      case QuizMode.firestore:
+        await startFirestoreQuiz(
+          limit: _lastFsLimit,
+          categoryId: _lastFsCategoryId,
+          difficulty: _lastFsDifficulty,
+        );
+        break;
+    }
+  }
+
   void chooseAnswer(int i) {
     if (_answered) return;
     if (current == null) return;
@@ -112,9 +121,7 @@ class QuizProvider extends ChangeNotifier {
     _selectedIndex = i;
     _answered = true;
 
-    if (i == current!.correctIndex) {
-      _score++;
-    }
+    if (i == current!.correctIndex) _score++;
 
     _timer?.cancel();
     notifyListeners();
@@ -145,15 +152,25 @@ class QuizProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void disposeQuiz() {
+  void disposeQuiz({bool clearQuestions = false}) {
     _timer?.cancel();
     _timer = null;
+
     _stopwatch.stop();
+
+    _answered = false;
+    _selectedIndex = null;
+    _remainingSeconds = 15;
+
+    if (clearQuestions) {
+      _questions = [];
+      _index = 0;
+      _score = 0;
+    }
+
+    notifyListeners();
   }
 
-  // ----------------------------
-  // INTERNAL HELPERS
-  // ----------------------------
   void _prepareQuiz() {
     if (_questions.isEmpty) {
       _error = "Aucune question disponible.";
@@ -202,8 +219,13 @@ class QuizProvider extends ChangeNotifier {
 
     try {
       await job();
-    } catch (_) {
-      _error = errorMessage;
+    } catch (e) {
+      // ✅ ICI: on garde ton message propre, mais on ajoute le détail technique
+      _error = "$errorMessage\nDétail: $e";
+      if (kDebugMode) {
+        // ignore: avoid_print
+        print("QuizProvider error: $e");
+      }
     } finally {
       _loading = false;
       notifyListeners();

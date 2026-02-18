@@ -1,4 +1,3 @@
-// home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,13 +9,19 @@ import '../../services/firestore_service.dart';
 import '../../models/leaderboard_entry_model.dart';
 
 import '../widgets/loading_overlay.dart';
-import '../widgets/shimmer_block.dart' as shimmer; // ✅ ALIAS pour éviter conflit "ShimmerBlock"
+import '../widgets/shimmer_block.dart' as shimmer;
 
 import 'login_screen.dart';
 import 'leaderboard_screen.dart';
 import 'quiz_screen.dart';
 
-/// HomeScreen complet avec QuizHub (API / Local / Smart / Firestore)
+// ✅ ADMIN
+import 'admin/admin_home_screen.dart';
+
+/// HomeScreen complet:
+/// - ✅ Admin => AdminHomeScreen direct
+/// - ✅ User => Home + 3 modes Quiz (API / Local / Firestore admin)
+/// - ✅ Firestore mode : choix catégorie (optionnel) + active categories/questions
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -25,6 +30,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // ✅ admin UID (comme dans tes rules)
+  static const String _adminUid = "MHTmzVqu78YC7FFK44XSPfBQ7G52";
+
   int _selectedIndex = 0;
 
   // Petit boot delay (UX shimmer)
@@ -33,11 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool _startedDashboardStream = false;
 
-  void _snackSafe(BuildContext context, String msg) {
-    // ✅ Évite "Looking up a deactivated widget's ancestor is unsafe"
-    if (!context.mounted) return;
-    final messenger = ScaffoldMessenger.maybeOf(context);
-    messenger?.showSnackBar(SnackBar(content: Text(msg)));
+  void _snackSafe(BuildContext ctx, String msg) {
+    if (!ctx.mounted) return;
+    ScaffoldMessenger.maybeOf(ctx)?.showSnackBar(SnackBar(content: Text(msg)));
   }
 
   String _displayName({required String? name, required String? email}) {
@@ -53,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final auth = context.watch<AuthProvider>();
     final user = auth.user;
 
-    // Pas connecté -> Login (sécurité)
+    // Pas connecté -> Login
     if (user == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
@@ -63,6 +69,11 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       });
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    // ✅ Admin => direct Admin Panel (sans logique bouton)
+    if (user.uid == _adminUid) {
+      return const AdminHomeScreen();
     }
 
     // KPI streams (une seule fois)
@@ -85,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return Scaffold(
             backgroundColor: const Color(0xFFF4F6FB),
 
-            // Drawer sur mobile/tablette
+            // Drawer mobile/tablette
             drawer: isWide
                 ? null
                 : _DashboardDrawer(
@@ -146,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             body: Row(
               children: [
-                // NavigationRail sur écran large
+                // Rail desktop
                 if (isWide)
                   _DashboardRail(
                     selectedIndex: _selectedIndex,
@@ -157,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onLogout: () => _logout(context),
                   ),
 
-                // Contenu principal
+                // Contenu
                 Expanded(
                   child: FutureBuilder<void>(
                     future: _bootFuture,
@@ -218,6 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 0:
         return _OverviewPage(key: key, userName: userName);
       case 1:
+      // ✅ Quiz Hub avec 3 options uniquement
         return const _QuizHubPage(key: ValueKey("quizhub"));
       case 2:
         return _LeaderboardHubPage(key: key, userId: userId);
@@ -257,13 +269,11 @@ class _OverviewPage extends StatelessWidget {
           _GradientHero(userName: userName),
           const SizedBox(height: 14),
 
-          // KPI shimmer si loading
           if (dash.isLoading) ...[
             Wrap(
               spacing: 12,
               runSpacing: 12,
               children: [
-                // ✅ pas const ici (évite "const list literal must be constants")
                 shimmer.ShimmerBlock(height: 84, width: 260),
                 shimmer.ShimmerBlock(height: 84, width: 260),
                 shimmer.ShimmerBlock(height: 84, width: 260),
@@ -298,7 +308,6 @@ class _OverviewPage extends StatelessWidget {
             ),
           ],
 
-          // Erreur KPI
           if (dash.error != null) ...[
             const SizedBox(height: 10),
             Text(
@@ -320,7 +329,7 @@ class _OverviewPage extends StatelessWidget {
             child: ListTile(
               leading: const Icon(Icons.play_circle_outline),
               title: const Text(
-                "Lancer un quiz",
+                "Lancer un quiz (API)",
                 style: TextStyle(fontWeight: FontWeight.w900),
               ),
               subtitle: const Text("Questions en ligne via OpenTDB."),
@@ -374,21 +383,27 @@ class _OverviewPage extends StatelessWidget {
   }
 }
 
-class _QuizHubPage extends StatelessWidget {
+class _QuizHubPage extends StatefulWidget {
   const _QuizHubPage({super.key});
+
+  @override
+  State<_QuizHubPage> createState() => _QuizHubPageState();
+}
+
+class _QuizHubPageState extends State<_QuizHubPage> {
+  String? _selectedCategoryId; // null => toutes catégories (Firestore)
+  String? _selectedCategoryName;
 
   Future<void> _launchQuiz(
       BuildContext context,
       Future<void> Function() starter,
       ) async {
     final quiz = context.read<QuizProvider>();
-
     await starter();
 
     if (!context.mounted) return;
 
     if (quiz.error != null) {
-      // ✅ context encore monté -> safe
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(quiz.error!)),
       );
@@ -397,6 +412,73 @@ class _QuizHubPage extends StatelessWidget {
 
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => const QuizScreen()),
+    );
+  }
+
+  Future<void> _pickFirestoreCategory(BuildContext context) async {
+    final fs = FirestoreService();
+
+    // ✅ Récupère les catégories actives (fallback active ?? true dans service)
+    final cats = await fs.fetchActiveCategories();
+
+    if (!context.mounted) return;
+
+    if (cats.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Aucune catégorie active disponible.")),
+      );
+      return;
+    }
+
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (_) {
+        return SafeArea(
+          child: ListView(
+            children: [
+              const ListTile(
+                title: Text(
+                  "Choisir une catégorie Firestore",
+                  style: TextStyle(fontWeight: FontWeight.w900),
+                ),
+                subtitle: Text("Les questions proviennent de l’admin."),
+              ),
+              const Divider(),
+
+              // Toutes catégories
+              ListTile(
+                leading: const Icon(Icons.all_inclusive),
+                title: const Text("Toutes les catégories"),
+                onTap: () {
+                  setState(() {
+                    _selectedCategoryId = null;
+                    _selectedCategoryName = null;
+                  });
+                  Navigator.of(context).pop();
+                },
+              ),
+
+              const Divider(),
+
+              // Liste catégories
+              for (final c in cats)
+                ListTile(
+                  leading: const Icon(Icons.category_outlined),
+                  title: Text((c['name'] ?? 'Sans nom').toString()),
+                  onTap: () {
+                    setState(() {
+                      _selectedCategoryId = (c['id'] ?? '').toString();
+                      _selectedCategoryName = (c['name'] ?? '').toString();
+                    });
+                    Navigator.of(context).pop();
+                  },
+                ),
+              const SizedBox(height: 10),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -419,6 +501,7 @@ class _QuizHubPage extends StatelessWidget {
           const Text("Choisis un mode de quiz."),
           const SizedBox(height: 14),
 
+          // ✅ 1) API
           _QuizModeCard(
             icon: Icons.cloud_outlined,
             title: "Quiz en ligne (API)",
@@ -428,6 +511,7 @@ class _QuizHubPage extends StatelessWidget {
           ),
           const SizedBox(height: 12),
 
+          // ✅ 2) Local
           _QuizModeCard(
             icon: Icons.storage_outlined,
             title: "Quiz hors ligne (Local)",
@@ -437,22 +521,55 @@ class _QuizHubPage extends StatelessWidget {
           ),
           const SizedBox(height: 12),
 
-          _QuizModeCard(
-            icon: Icons.auto_awesome_outlined,
-            title: "Automatique (Smart)",
-            subtitle: "API puis fallback local",
-            loading: quiz.isLoading,
-            onTap: () => _launchQuiz(context, () => quiz.startSmartQuiz()),
-          ),
-          const SizedBox(height: 12),
-
-          // 4e option Firestore (questions admin)
-          _QuizModeCard(
-            icon: Icons.cloud_done_outlined,
-            title: "Quiz Firestore (Admin)",
-            subtitle: "Questions créées par l’admin (Firestore)",
-            loading: quiz.isLoading,
-            onTap: () => _launchQuiz(context, () => quiz.startFirestoreQuiz()),
+          // ✅ 3) Firestore (Admin)
+          Card(
+            elevation: 0,
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+              side: BorderSide(color: Colors.grey.shade200),
+            ),
+            child: Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.cloud_done_outlined, size: 28),
+                  title: const Text(
+                    "Quiz Firestore (Admin)",
+                    style: TextStyle(fontWeight: FontWeight.w900),
+                  ),
+                  subtitle: Text(
+                    _selectedCategoryId == null
+                        ? "Questions créées par l’admin (toutes catégories)"
+                        : "Catégorie: ${_selectedCategoryName ?? _selectedCategoryId}",
+                  ),
+                  trailing: quiz.isLoading
+                      ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                      : const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: quiz.isLoading
+                      ? null
+                      : () => _launchQuiz(
+                    context,
+                        () => quiz.startFirestoreQuiz(
+                      // ✅ tu peux changer limit si tu veux
+                      limit: 30,
+                      categoryId: _selectedCategoryId,
+                      difficulty: null,
+                    ),
+                  ),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.tune),
+                  title: const Text("Choisir la catégorie"),
+                  subtitle: const Text("Optionnel (sinon: toutes catégories)"),
+                  onTap: quiz.isLoading ? null : () => _pickFirestoreCategory(context),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -890,7 +1007,6 @@ class _DashboardShimmer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: ListView(
-        // ✅ PAS const -> ShimmerBlock pas forcément const
         children: [
           shimmer.ShimmerBlock(height: 90, width: double.infinity),
           const SizedBox(height: 14),

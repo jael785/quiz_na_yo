@@ -32,9 +32,10 @@ class ResultScreen extends StatefulWidget {
 
 class _ResultScreenState extends State<ResultScreen> {
   bool _saving = false;
-  bool _saved = false; // ✅ empêche double envoi (double clic / refresh)
+  bool _saved = false;
 
-  /// Affiche un SnackBar sans crasher si l'écran est déjà démonté
+  bool _restarting = false; // ✅ évite double clic
+
   void _snack(String msg) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -42,7 +43,6 @@ class _ResultScreenState extends State<ResultScreen> {
     );
   }
 
-  /// Format % score
   String _formatPercent() {
     if (widget.total == 0) return "0%";
     final p = (widget.score / widget.total) * 100;
@@ -62,9 +62,6 @@ class _ResultScreenState extends State<ResultScreen> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // ----------------------------
-            // Résumé score
-            // ----------------------------
             Card(
               elevation: 0,
               color: Colors.white,
@@ -102,10 +99,6 @@ class _ResultScreenState extends State<ResultScreen> {
 
             const SizedBox(height: 14),
 
-            // ----------------------------
-            // ✅ Enregistrer au classement (Solution A)
-            // scores/ (historique) + leaderboard/{uid} (best unique)
-            // ----------------------------
             SizedBox(
               width: double.infinity,
               child: FilledButton.icon(
@@ -127,30 +120,24 @@ class _ResultScreenState extends State<ResultScreen> {
 
             const SizedBox(height: 10),
 
-            // ----------------------------
-            // Actions
-            // ----------------------------
             Row(
               children: [
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {
-                      // Rejouer: stop timer + reset local state
-                      context.read<QuizProvider>().disposeQuiz();
-
-                      // Remplace l'écran résultat par le quiz
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => const QuizScreen()),
-                      );
-                    },
-                    child: const Text("Rejouer"),
+                    onPressed: (_restarting || _saving) ? null : _replay,
+                    child: _restarting
+                        ? const SizedBox(
+                      height: 18,
+                      width: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                        : const Text("Rejouer"),
                   ),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      // Retour dashboard (reset stack)
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (_) => const HomeScreen()),
                             (_) => false,
@@ -167,11 +154,41 @@ class _ResultScreenState extends State<ResultScreen> {
     );
   }
 
-  /// Enregistre le résultat dans Firestore (Solution A)
+  /// ✅ Rejouer = relancer le dernier mode (api/local/smart/firestore)
+  Future<void> _replay() async {
+    setState(() => _restarting = true);
+
+    final quiz = context.read<QuizProvider>();
+
+    try {
+      // 1) reset état
+      quiz.disposeQuiz();
+
+      // 2) relance même mode
+      await quiz.restartLastQuiz();
+
+      if (!mounted) return;
+
+      // 3) si erreur -> snack
+      if (quiz.error != null) {
+        _snack(quiz.error!);
+        return;
+      }
+
+      // 4) go quiz
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const QuizScreen()),
+      );
+    } catch (e) {
+      if (mounted) _snack("Erreur rejouer: $e");
+    } finally {
+      if (mounted) setState(() => _restarting = false);
+    }
+  }
+
   Future<void> _submitResult() async {
     setState(() => _saving = true);
 
-    // 1) Prépare l'entrée
     final entry = LeaderboardEntryModel(
       userId: widget.userId,
       userName: widget.userName,
@@ -183,7 +200,6 @@ class _ResultScreenState extends State<ResultScreen> {
     );
 
     try {
-      // 2) ✅ Un seul appel : écrit l'historique + met à jour le best unique
       await FirestoreService().submitResult(entry);
 
       if (!mounted) return;

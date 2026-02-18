@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:quiz_na_yo/providers/dashboard_provider.dart';
 
 import 'firebase_options.dart';
 
@@ -9,23 +8,27 @@ import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'providers/quiz_provider.dart';
 import 'providers/leaderboard_provider.dart';
+import 'providers/dashboard_provider.dart';
 
 // Screens
 import 'views/screens/splash_screen.dart';
 
+// ✅ Admin screen (corrige le chemin selon ton projet)
+import 'views/screens/admin/admin_home_screen.dart';
+
+// ✅ User screens (corrige le chemin si nécessaire)
+import 'views/screens/login_screen.dart';
+import 'views/screens/home_screen.dart';
+
 Future<void> main() async {
-  // Obligatoire avant Firebase
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
-    // Initialisation Firebase (Web + Mobile)
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-
     runApp(const QuizNaYoApp());
   } catch (e) {
-    // Si Firebase crash -> écran lisible
     runApp(FirebaseInitErrorApp(error: e.toString()));
   }
 }
@@ -50,12 +53,15 @@ class QuizNaYoApp extends StatelessWidget {
           create: (_) => QuizProvider(),
         ),
 
-        // Leaderboard (classement local pour l'instant)
+        // Leaderboard
         ChangeNotifierProvider(
           create: (_) => LeaderboardProvider(),
         ),
+
+        // Dashboard KPI
         ChangeNotifierProvider(
-            create: (_) => DashboardProvider()),
+          create: (_) => DashboardProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -66,8 +72,15 @@ class QuizNaYoApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.grey.shade50,
         ),
 
-        // Splash décide Login ou Home
+        // ✅ Splash décide Login / Home user / Admin panel
         home: const SplashScreen(),
+
+        // ✅ (Optionnel mais utile) routes nommées si tu veux
+        routes: {
+          '/login': (_) => const LoginScreen(),
+          '/home': (_) => const HomeScreen(),
+          '/admin': (_) => const AdminHomeScreen(),
+        },
       ),
     );
   }
