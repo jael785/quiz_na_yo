@@ -1,0 +1,808 @@
+{
+  "questions": [
+    {
+      "id": "1",
+      "category": "Math",
+      "question": "Combien font 7 + 5 ?",
+      "options": ["10", "11", "12", "13"],
+      "correctIndex": 2,
+      "explanation": "7 + 5 = 12."
+    },
+    {
+      "id": "2",
+      "category": "Math",
+      "question": "Combien font 9 - 4 ?",
+      "options": ["3", "4", "5", "6"],
+      "correctIndex": 2,
+      "explanation": "9 - 4 = 5."
+    },
+    {
+      "id": "3",
+      "category": "Math",
+      "question": "Combien font 6 × 3 ?",
+      "options": ["18", "16", "20", "12"],
+      "correctIndex": 0,
+      "explanation": "6 × 3 = 18."
+    },
+    {
+      "id": "4",
+      "category": "Math",
+      "question": "Combien font 20 ÷ 5 ?",
+      "options": ["2", "4", "5", "6"],
+      "correctIndex": 1,
+      "explanation": "20 ÷ 5 = 4."
+    },
+    {
+      "id": "5",
+      "category": "Général",
+      "question": "Quelle est la capitale de la RD Congo ?",
+      "options": ["Lubumbashi", "Kinshasa", "Goma", "Kisangani"],
+      "correctIndex": 1,
+      "explanation": "La capitale de la RD Congo est Kinshasa."
+    },
+    {
+      "id": "6",
+      "category": "Général",
+      "question": "Quel jour vient après lundi ?",
+      "options": ["Dimanche", "Mardi", "Jeudi", "Samedi"],
+      "correctIndex": 1,
+      "explanation": "Après lundi vient mardi."
+    },
+    {
+      "id": "7",
+      "category": "Tech",
+      "question": "Quel langage est utilisé par Flutter ?",
+      "options": ["Java", "Dart", "Python", "C#"],
+      "correctIndex": 1,
+      "explanation": "Flutter utilise Dart."
+    },
+    {
+      "id": "8",
+      "category": "Tech",
+      "question": "Quel système de gestion de versions est le plus utilisé ?",
+      "options": ["SVN", "Mercurial", "Git", "CVS"],
+      "correctIndex": 2,
+      "explanation": "Git est le plus utilisé."
+    },
+    {
+      "id": "9",
+      "category": "Réseaux",
+      "question": "Quel protocole sert à attribuer automatiquement des adresses IP ?",
+      "options": ["DNS", "DHCP", "HTTP", "FTP"],
+      "correctIndex": 1,
+      "explanation": "DHCP attribue automatiquement des adresses IP."
+    },
+    {
+      "id": "10",
+      "category": "Réseaux",
+      "question": "Quel protocole traduit un nom de domaine en adresse IP ?",
+      "options": ["DNS", "ARP", "ICMP", "SMTP"],
+      "correctIndex": 0,
+      "explanation": "DNS traduit les noms de domaine en IP."
+    },
+    {
+      "id": "11",
+      "category": "Réseaux",
+      "question": "Quel est le port par défaut de HTTP ?",
+      "options": ["21", "22", "80", "443"],
+      "correctIndex": 2,
+      "explanation": "HTTP utilise le port 80."
+    },
+    {
+      "id": "12",
+      "category": "Réseaux",
+      "question": "Quel est le port par défaut de HTTPS ?",
+      "options": ["80", "443", "25", "110"],
+      "correctIndex": 1,
+      "explanation": "HTTPS utilise le port 443."
+    },
+    {
+      "id": "13",
+      "category": "Sécurité",
+      "question": "Que signifie '2FA' ?",
+      "options": ["Two-Factor Authentication", "Two-File Access", "Time-Fixed Authorization", "Transfer-Fast API"],
+      "correctIndex": 0,
+      "explanation": "2FA = Two-Factor Authentication."
+    },
+    {
+      "id": "14",
+      "category": "Sécurité",
+      "question": "Quel est l’objectif principal du chiffrement ?",
+      "options": ["Accélérer Internet", "Rendre la donnée illisible sans clé", "Créer des IP", "Supprimer les logs"],
+      "correctIndex": 1,
+      "explanation": "Le chiffrement rend la donnée illisible sans la clé."
+    },
+    {
+      "id": "15",
+      "category": "Flutter",
+      "question": "Quel widget Flutter gère l’état global avec Provider ?",
+      "options": ["ChangeNotifier", "FutureBuilder", "MediaQuery", "Navigator"],
+      "correctIndex": 0,
+      "explanation": "Provider s’appuie souvent sur ChangeNotifier."
+    },
+    {
+      "id": "16",
+      "category": "Flutter",
+      "question": "Quel widget permet la navigation entre pages ?",
+      "options": ["Navigator", "Scaffold", "Padding", "Theme"],
+      "correctIndex": 0,
+      "explanation": "Navigator gère la navigation."
+    },
+    {
+      "id": "17",
+      "category": "Flutter",
+      "question": "Quel fichier déclare les dépendances Flutter ?",
+      "options": ["build.gradle", "pubspec.yaml", "AndroidManifest.xml", "settings.json"],
+      "correctIndex": 1,
+      "explanation": "Les dépendances sont dans pubspec.yaml."
+    },
+    {
+      "id": "18",
+      "category": "Tech",
+      "question": "Qu'est-ce qu'une API REST utilise souvent comme format de réponse ?",
+      "options": ["TXT", "JSON", "DOCX", "BMP"],
+      "correctIndex": 1,
+      "explanation": "Les API REST renvoient souvent du JSON."
+    },
+    {
+      "id": "19",
+      "category": "Réseaux",
+      "question": "Quelle commande sert souvent à tester la connectivité réseau ?",
+      "options": ["ping", "mkdir", "cd", "chmod"],
+      "correctIndex": 0,
+      "explanation": "ping teste la connectivité (ICMP)."
+    },
+    {
+      "id": "20",
+      "category": "Réseaux",
+      "question": "Que signifie LAN ?",
+      "options": ["Large Access Network", "Local Area Network", "Linked Analog Node", "Long Address Number"],
+      "correctIndex": 1,
+      "explanation": "LAN = Local Area Network."
+    },
+
+    {
+      "id": "21",
+      "category": "Math",
+      "question": "Combien font 15 + 10 ?",
+      "options": ["20", "25", "30", "35"],
+      "correctIndex": 1,
+      "explanation": "15 + 10 = 25."
+    },
+    {
+      "id": "22",
+      "category": "Math",
+      "question": "Combien font 14 - 9 ?",
+      "options": ["3", "4", "5", "6"],
+      "correctIndex": 2,
+      "explanation": "14 - 9 = 5."
+    },
+    {
+      "id": "23",
+      "category": "Math",
+      "question": "Combien font 8 × 7 ?",
+      "options": ["54", "56", "58", "64"],
+      "correctIndex": 1,
+      "explanation": "8 × 7 = 56."
+    },
+    {
+      "id": "24",
+      "category": "Math",
+      "question": "Combien font 81 ÷ 9 ?",
+      "options": ["8", "9", "10", "11"],
+      "correctIndex": 1,
+      "explanation": "81 ÷ 9 = 9."
+    },
+    {
+      "id": "25",
+      "category": "Général",
+      "question": "Combien de minutes dans une heure ?",
+      "options": ["30", "45", "60", "90"],
+      "correctIndex": 2,
+      "explanation": "1 heure = 60 minutes."
+    },
+    {
+      "id": "26",
+      "category": "Général",
+      "question": "Combien de jours dans une semaine ?",
+      "options": ["5", "6", "7", "8"],
+      "correctIndex": 2,
+      "explanation": "Une semaine contient 7 jours."
+    },
+    {
+      "id": "27",
+      "category": "Tech",
+      "question": "Quel composant stocke les données temporairement pour accélérer un PC ?",
+      "options": ["CPU", "RAM", "GPU", "SSD"],
+      "correctIndex": 1,
+      "explanation": "La RAM est la mémoire vive."
+    },
+    {
+      "id": "28",
+      "category": "Tech",
+      "question": "Quel est le rôle principal d’un système d’exploitation ?",
+      "options": ["Dessiner", "Gérer le matériel et les programmes", "Créer des câbles", "Chiffrer automatiquement tout"],
+      "correctIndex": 1,
+      "explanation": "Un OS gère matériel, processus, mémoire, fichiers."
+    },
+    {
+      "id": "29",
+      "category": "Réseaux",
+      "question": "Quelle adresse IP est en privé (RFC1918) ?",
+      "options": ["8.8.8.8", "192.168.1.10", "1.1.1.1", "52.10.1.2"],
+      "correctIndex": 1,
+      "explanation": "192.168.0.0/16 est une plage privée."
+    },
+    {
+      "id": "30",
+      "category": "Réseaux",
+      "question": "Quelle couche du modèle OSI gère le routage ?",
+      "options": ["Physique", "Réseau", "Session", "Application"],
+      "correctIndex": 1,
+      "explanation": "La couche Réseau (Layer 3) gère le routage."
+    },
+    {
+      "id": "31",
+      "category": "Sécurité",
+      "question": "Qu’est-ce qu’un mot de passe fort contient généralement ?",
+      "options": ["Seulement des chiffres", "Seulement des lettres", "Lettres + chiffres + symboles", "Seulement un prénom"],
+      "correctIndex": 2,
+      "explanation": "Un mot de passe fort mélange plusieurs types de caractères."
+    },
+    {
+      "id": "32",
+      "category": "Sécurité",
+      "question": "Que signifie 'phishing' ?",
+      "options": ["Chiffrement", "Arnaque par imitation", "Compression", "Sauvegarde"],
+      "correctIndex": 1,
+      "explanation": "Le phishing imite un service pour voler des infos."
+    },
+    {
+      "id": "33",
+      "category": "Flutter",
+      "question": "Quel widget donne une structure standard (appBar, body, FAB) ?",
+      "options": ["Scaffold", "Column", "Text", "Align"],
+      "correctIndex": 0,
+      "explanation": "Scaffold structure l’écran."
+    },
+    {
+      "id": "34",
+      "category": "Flutter",
+      "question": "Quel widget rend l’UI scrollable ?",
+      "options": ["Container", "ListView", "Row", "Icon"],
+      "correctIndex": 1,
+      "explanation": "ListView est scrollable."
+    },
+    {
+      "id": "35",
+      "category": "Tech",
+      "question": "Que signifie 'UI' ?",
+      "options": ["User Interface", "Universal Internet", "Unit Index", "Ultra Input"],
+      "correctIndex": 0,
+      "explanation": "UI = User Interface (interface utilisateur)."
+    },
+    {
+      "id": "36",
+      "category": "Tech",
+      "question": "Que signifie 'UX' ?",
+      "options": ["User Experience", "Ultra XML", "Unix Execute", "User Extra"],
+      "correctIndex": 0,
+      "explanation": "UX = User Experience (expérience utilisateur)."
+    },
+    {
+      "id": "37",
+      "category": "Réseaux",
+      "question": "Quel protocole est utilisé pour envoyer des emails ?",
+      "options": ["SMTP", "DNS", "DHCP", "NTP"],
+      "correctIndex": 0,
+      "explanation": "SMTP est utilisé pour l’envoi d’emails."
+    },
+    {
+      "id": "38",
+      "category": "Réseaux",
+      "question": "Quel protocole sert à synchroniser l’heure sur un réseau ?",
+      "options": ["SNMP", "NTP", "POP3", "IMAP"],
+      "correctIndex": 1,
+      "explanation": "NTP synchronise l’heure."
+    },
+    {
+      "id": "39",
+      "category": "Sécurité",
+      "question": "Qu'est-ce qu'un pare-feu (firewall) fait principalement ?",
+      "options": ["Stocker des photos", "Filtrer le trafic réseau", "Créer des câbles", "Accélérer la RAM"],
+      "correctIndex": 1,
+      "explanation": "Un pare-feu filtre le trafic selon des règles."
+    },
+    {
+      "id": "40",
+      "category": "Flutter",
+      "question": "Quel widget affiche une image locale dans assets ?",
+      "options": ["Image.asset", "Image.file", "Text", "Card"],
+      "correctIndex": 0,
+      "explanation": "Image.asset charge une image depuis assets."
+    },
+
+    {
+      "id": "41",
+      "category": "Math",
+      "question": "Quel est le carré de 9 ?",
+      "options": ["18", "81", "72", "90"],
+      "correctIndex": 1,
+      "explanation": "9² = 81."
+    },
+    {
+      "id": "42",
+      "category": "Math",
+      "question": "Combien font 100 ÷ 4 ?",
+      "options": ["20", "25", "30", "40"],
+      "correctIndex": 1,
+      "explanation": "100 ÷ 4 = 25."
+    },
+    {
+      "id": "43",
+      "category": "Général",
+      "question": "Quel mois vient après mars ?",
+      "options": ["Février", "Avril", "Mai", "Juin"],
+      "correctIndex": 1,
+      "explanation": "Après mars vient avril."
+    },
+    {
+      "id": "44",
+      "category": "Général",
+      "question": "Combien de secondes dans une minute ?",
+      "options": ["30", "45", "60", "90"],
+      "correctIndex": 2,
+      "explanation": "1 minute = 60 secondes."
+    },
+    {
+      "id": "45",
+      "category": "Tech",
+      "question": "Quel langage est souvent utilisé côté web pour la structure ?",
+      "options": ["HTML", "SQL", "Bash", "C"],
+      "correctIndex": 0,
+      "explanation": "HTML structure une page web."
+    },
+    {
+      "id": "46",
+      "category": "Tech",
+      "question": "Quel langage est souvent utilisé côté web pour le style ?",
+      "options": ["CSS", "HTML", "C", "SQL"],
+      "correctIndex": 0,
+      "explanation": "CSS gère le style."
+    },
+    {
+      "id": "47",
+      "category": "Tech",
+      "question": "Quel langage est souvent utilisé côté web pour l’interactivité ?",
+      "options": ["JavaScript", "HTML", "CSS", "PNG"],
+      "correctIndex": 0,
+      "explanation": "JavaScript gère l’interactivité."
+    },
+    {
+      "id": "48",
+      "category": "Réseaux",
+      "question": "Quelle couche OSI correspond au transport (TCP/UDP) ?",
+      "options": ["Couche 2", "Couche 3", "Couche 4", "Couche 7"],
+      "correctIndex": 2,
+      "explanation": "TCP/UDP = couche 4 (Transport)."
+    },
+    {
+      "id": "49",
+      "category": "Réseaux",
+      "question": "TCP est plutôt…",
+      "options": ["Non fiable", "Orienté connexion", "Sans accusé de réception", "Uniquement local"],
+      "correctIndex": 1,
+      "explanation": "TCP est orienté connexion et fiable."
+    },
+    {
+      "id": "50",
+      "category": "Réseaux",
+      "question": "UDP est plutôt…",
+      "options": ["Orienté connexion", "Plus lent que TCP", "Sans connexion", "Chiffré par défaut"],
+      "correctIndex": 2,
+      "explanation": "UDP est sans connexion (connectionless)."
+    },
+    {
+      "id": "51",
+      "category": "Sécurité",
+      "question": "HTTPS combine HTTP avec…",
+      "options": ["TLS/SSL", "FTP", "DHCP", "ARP"],
+      "correctIndex": 0,
+      "explanation": "HTTPS = HTTP + TLS/SSL."
+    },
+    {
+      "id": "52",
+      "category": "Sécurité",
+      "question": "Quel est un exemple de facteur 'quelque chose que je suis' (2FA) ?",
+      "options": ["Mot de passe", "Empreinte digitale", "Carte SIM", "Code SMS"],
+      "correctIndex": 1,
+      "explanation": "L’empreinte digitale est un facteur biométrique."
+    },
+    {
+      "id": "53",
+      "category": "Flutter",
+      "question": "Quel widget est utilisé pour des layouts horizontaux ?",
+      "options": ["Row", "Column", "Stack", "ListTile"],
+      "correctIndex": 0,
+      "explanation": "Row aligne horizontalement."
+    },
+    {
+      "id": "54",
+      "category": "Flutter",
+      "question": "Quel widget est utilisé pour des layouts verticaux ?",
+      "options": ["Row", "Column", "Icon", "SizedBox"],
+      "correctIndex": 1,
+      "explanation": "Column aligne verticalement."
+    },
+    {
+      "id": "55",
+      "category": "Tech",
+      "question": "Qu’est-ce qu’une base de données relationnelle utilise ?",
+      "options": ["Tables", "Pixels", "Routes", "VLAN"],
+      "correctIndex": 0,
+      "explanation": "Une base relationnelle utilise des tables."
+    },
+    {
+      "id": "56",
+      "category": "Tech",
+      "question": "Quel langage est utilisé pour interroger une base relationnelle ?",
+      "options": ["SQL", "HTML", "CSS", "PNG"],
+      "correctIndex": 0,
+      "explanation": "SQL sert à interroger les bases relationnelles."
+    },
+    {
+      "id": "57",
+      "category": "Réseaux",
+      "question": "Quelle commande affiche la configuration IP sur Windows ?",
+      "options": ["ipconfig", "ls", "ps", "cat"],
+      "correctIndex": 0,
+      "explanation": "ipconfig affiche la config réseau sur Windows."
+    },
+    {
+      "id": "58",
+      "category": "Réseaux",
+      "question": "Quelle commande affiche les interfaces sur Linux ?",
+      "options": ["ifconfig", "mkdir", "nano", "pingg"],
+      "correctIndex": 0,
+      "explanation": "ifconfig est une commande classique (souvent remplacée par ip)."
+    },
+    {
+      "id": "59",
+      "category": "Sécurité",
+      "question": "Une mise à jour système sert souvent à…",
+      "options": ["Rendre l’écran plus grand", "Corriger des bugs et failles", "Changer l’heure", "Supprimer Internet"],
+      "correctIndex": 1,
+      "explanation": "Les updates corrigent bugs et failles."
+    },
+    {
+      "id": "60",
+      "category": "Flutter",
+      "question": "Quel widget affiche un bouton principal Material 3 ?",
+      "options": ["FilledButton", "Text", "Divider", "Opacity"],
+      "correctIndex": 0,
+      "explanation": "FilledButton est le bouton principal en Material 3."
+    },
+
+    {
+      "id": "61",
+      "category": "Math",
+      "question": "Combien font 12 + 18 ?",
+      "options": ["28", "30", "32", "34"],
+      "correctIndex": 1,
+      "explanation": "12 + 18 = 30."
+    },
+    {
+      "id": "62",
+      "category": "Math",
+      "question": "Combien font 50 - 17 ?",
+      "options": ["33", "34", "35", "36"],
+      "correctIndex": 0,
+      "explanation": "50 - 17 = 33."
+    },
+    {
+      "id": "63",
+      "category": "Math",
+      "question": "Combien font 9 × 9 ?",
+      "options": ["81", "72", "99", "90"],
+      "correctIndex": 0,
+      "explanation": "9 × 9 = 81."
+    },
+    {
+      "id": "64",
+      "category": "Math",
+      "question": "Combien font 64 ÷ 8 ?",
+      "options": ["6", "7", "8", "9"],
+      "correctIndex": 2,
+      "explanation": "64 ÷ 8 = 8."
+    },
+    {
+      "id": "65",
+      "category": "Général",
+      "question": "Quelle saison vient après l’hiver (généralement) ?",
+      "options": ["Été", "Automne", "Printemps", "Hiver"],
+      "correctIndex": 2,
+      "explanation": "Après l’hiver vient le printemps."
+    },
+    {
+      "id": "66",
+      "category": "Général",
+      "question": "Quel animal est souvent appelé 'roi de la jungle' ?",
+      "options": ["Tigre", "Lion", "Éléphant", "Zèbre"],
+      "correctIndex": 1,
+      "explanation": "Le lion est souvent appelé roi de la jungle."
+    },
+    {
+      "id": "67",
+      "category": "Tech",
+      "question": "Qu’est-ce qu’un 'bug' ?",
+      "options": ["Un câble", "Une erreur dans un programme", "Un routeur", "Une IP"],
+      "correctIndex": 1,
+      "explanation": "Un bug est une erreur/défaut logiciel."
+    },
+    {
+      "id": "68",
+      "category": "Tech",
+      "question": "Qu’est-ce qu’un 'framework' ?",
+      "options": ["Un langage", "Un outil/structure pour développer", "Un virus", "Un câble RJ45"],
+      "correctIndex": 1,
+      "explanation": "Un framework aide à structurer le développement."
+    },
+    {
+      "id": "69",
+      "category": "Réseaux",
+      "question": "Quelle adresse est typiquement une loopback IPv4 ?",
+      "options": ["0.0.0.0", "127.0.0.1", "255.255.255.0", "192.168.0.1"],
+      "correctIndex": 1,
+      "explanation": "127.0.0.1 est l’adresse loopback."
+    },
+    {
+      "id": "70",
+      "category": "Réseaux",
+      "question": "À quoi sert ARP ?",
+      "options": ["Traduire nom en IP", "Associer IP à MAC", "Chiffrer HTTP", "Attribuer IP auto"],
+      "correctIndex": 1,
+      "explanation": "ARP associe une IP à une adresse MAC en LAN."
+    },
+    {
+      "id": "71",
+      "category": "Sécurité",
+      "question": "Quel type d’attaque consiste à deviner un mot de passe par essais multiples ?",
+      "options": ["Phishing", "Brute force", "Sniffing", "Spoofing"],
+      "correctIndex": 1,
+      "explanation": "Brute force = essais multiples de mots de passe."
+    },
+    {
+      "id": "72",
+      "category": "Sécurité",
+      "question": "Quel est le meilleur réflexe contre un lien suspect ?",
+      "options": ["Cliquer vite", "Vérifier l’URL et la source", "Envoyer le mot de passe", "Ignorer les mises à jour"],
+      "correctIndex": 1,
+      "explanation": "Toujours vérifier la source et l’URL."
+    },
+    {
+      "id": "73",
+      "category": "Flutter",
+      "question": "Quel widget gère des listes d’items avec séparation simple ?",
+      "options": ["ListView.separated", "TextField", "Spacer", "Wrap"],
+      "correctIndex": 0,
+      "explanation": "ListView.separated gère une séparation entre éléments."
+    },
+    {
+      "id": "74",
+      "category": "Flutter",
+      "question": "Quel widget affiche une boîte de dialogue ?",
+      "options": ["showDialog", "showSnackBar", "runApp", "setState"],
+      "correctIndex": 0,
+      "explanation": "showDialog affiche une boîte de dialogue."
+    },
+    {
+      "id": "75",
+      "category": "Tech",
+      "question": "Que signifie 'CPU' ?",
+      "options": ["Central Processing Unit", "Control Program Utility", "Computer Private User", "Core Power Unit"],
+      "correctIndex": 0,
+      "explanation": "CPU = Central Processing Unit."
+    },
+    {
+      "id": "76",
+      "category": "Tech",
+      "question": "Que signifie 'RAM' ?",
+      "options": ["Random Access Memory", "Rapid Audio Module", "Route Access Mode", "Read All Memory"],
+      "correctIndex": 0,
+      "explanation": "RAM = Random Access Memory."
+    },
+    {
+      "id": "77",
+      "category": "Réseaux",
+      "question": "Le Wi-Fi est une technologie de réseau…",
+      "options": ["Sans fil", "Uniquement fibre", "Uniquement satellite", "Uniquement coaxial"],
+      "correctIndex": 0,
+      "explanation": "Wi-Fi = réseau sans fil."
+    },
+    {
+      "id": "78",
+      "category": "Réseaux",
+      "question": "Un switch travaille principalement à quelle couche OSI ?",
+      "options": ["Couche 1", "Couche 2", "Couche 4", "Couche 7"],
+      "correctIndex": 1,
+      "explanation": "Un switch opère généralement en couche 2."
+    },
+    {
+      "id": "79",
+      "category": "Réseaux",
+      "question": "Un routeur travaille principalement à quelle couche OSI ?",
+      "options": ["Couche 1", "Couche 2", "Couche 3", "Couche 7"],
+      "correctIndex": 2,
+      "explanation": "Un routeur opère généralement en couche 3."
+    },
+    {
+      "id": "80",
+      "category": "Flutter",
+      "question": "Quel widget permet d’ajouter des marges internes ?",
+      "options": ["Padding", "Center", "Icon", "Divider"],
+      "correctIndex": 0,
+      "explanation": "Padding ajoute des marges internes."
+    },
+
+    {
+      "id": "81",
+      "category": "Math",
+      "question": "Combien font 3 × 12 ?",
+      "options": ["24", "30", "36", "40"],
+      "correctIndex": 2,
+      "explanation": "3 × 12 = 36."
+    },
+    {
+      "id": "82",
+      "category": "Math",
+      "question": "Combien font 72 ÷ 6 ?",
+      "options": ["10", "11", "12", "13"],
+      "correctIndex": 2,
+      "explanation": "72 ÷ 6 = 12."
+    },
+    {
+      "id": "83",
+      "category": "Général",
+      "question": "Quelle est la couleur du ciel par temps clair ?",
+      "options": ["Vert", "Bleu", "Rouge", "Noir"],
+      "correctIndex": 1,
+      "explanation": "Le ciel est généralement bleu par temps clair."
+    },
+    {
+      "id": "84",
+      "category": "Général",
+      "question": "Quel organe sert principalement à respirer ?",
+      "options": ["Cœur", "Poumons", "Foie", "Reins"],
+      "correctIndex": 1,
+      "explanation": "Les poumons servent à respirer."
+    },
+    {
+      "id": "85",
+      "category": "Tech",
+      "question": "Qu’est-ce qu’un 'compilateur' fait ?",
+      "options": ["Dessine", "Transforme du code en programme", "Supprime Internet", "Crée des câbles"],
+      "correctIndex": 1,
+      "explanation": "Un compilateur transforme du code en exécutable (selon le langage)."
+    },
+    {
+      "id": "86",
+      "category": "Tech",
+      "question": "Qu’est-ce qu’un 'IDE' ?",
+      "options": ["Un navigateur", "Un éditeur + outils pour coder", "Un routeur", "Un protocole"],
+      "correctIndex": 1,
+      "explanation": "IDE = environnement de développement intégré."
+    },
+    {
+      "id": "87",
+      "category": "Réseaux",
+      "question": "Quel masque correspond à /24 ?",
+      "options": ["255.0.0.0", "255.255.0.0", "255.255.255.0", "255.255.255.252"],
+      "correctIndex": 2,
+      "explanation": "/24 = 255.255.255.0."
+    },
+    {
+      "id": "88",
+      "category": "Réseaux",
+      "question": "Combien d’adresses (total) dans un /30 IPv4 ?",
+      "options": ["2", "4", "8", "16"],
+      "correctIndex": 1,
+      "explanation": "Un /30 contient 4 adresses au total."
+    },
+    {
+      "id": "89",
+      "category": "Sécurité",
+      "question": "Qu’est-ce qu’un 'backup' ?",
+      "options": ["Un effacement", "Une sauvegarde", "Un virus", "Un routeur"],
+      "correctIndex": 1,
+      "explanation": "Backup = sauvegarde."
+    },
+    {
+      "id": "90",
+      "category": "Sécurité",
+      "question": "Quel est un bon endroit pour stocker une copie de sauvegarde ?",
+      "options": ["Seulement sur le PC", "Sur un support externe/cloud", "Dans la corbeille", "Dans un email public"],
+      "correctIndex": 1,
+      "explanation": "Il faut une copie externe (offline/cloud) pour la résilience."
+    },
+    {
+      "id": "91",
+      "category": "Flutter",
+      "question": "Quel widget gère l’espace vide dans Row/Column ?",
+      "options": ["Spacer", "Image", "Theme", "AppBar"],
+      "correctIndex": 0,
+      "explanation": "Spacer prend l’espace disponible."
+    },
+    {
+      "id": "92",
+      "category": "Flutter",
+      "question": "Quel widget affiche un message en bas (feedback) ?",
+      "options": ["SnackBar", "AlertDialog", "Tooltip", "IconButton"],
+      "correctIndex": 0,
+      "explanation": "SnackBar affiche un feedback en bas."
+    },
+    {
+      "id": "93",
+      "category": "Tech",
+      "question": "Quel est l’objectif d’un test unitaire (unit test) ?",
+      "options": ["Décorer l’UI", "Tester une petite partie du code", "Changer le logo", "Créer des câbles"],
+      "correctIndex": 1,
+      "explanation": "Un test unitaire teste une unité de code (fonction/classe)."
+    },
+    {
+      "id": "94",
+      "category": "Tech",
+      "question": "Qu’est-ce qu’un 'algorithme' ?",
+      "options": ["Une suite d’étapes", "Un câble", "Un écran", "Un dossier Windows"],
+      "correctIndex": 0,
+      "explanation": "Un algorithme est une suite d’étapes pour résoudre un problème."
+    },
+    {
+      "id": "95",
+      "category": "Réseaux",
+      "question": "Quel protocole sert souvent à administrer un équipement à distance de manière chiffrée ?",
+      "options": ["Telnet", "SSH", "HTTP", "FTP"],
+      "correctIndex": 1,
+      "explanation": "SSH permet une administration chiffrée."
+    },
+    {
+      "id": "96",
+      "category": "Réseaux",
+      "question": "Quel protocole non chiffré était utilisé historiquement pour l’administration distante ?",
+      "options": ["SSH", "Telnet", "TLS", "SFTP"],
+      "correctIndex": 1,
+      "explanation": "Telnet n’est pas chiffré."
+    },
+    {
+      "id": "97",
+      "category": "Sécurité",
+      "question": "Pourquoi éviter Telnet sur Internet ?",
+      "options": ["Trop rapide", "Pas chiffré", "Bloque le Wi-Fi", "Change l’IP"],
+      "correctIndex": 1,
+      "explanation": "Telnet transmet en clair (risque interception)."
+    },
+    {
+      "id": "98",
+      "category": "Flutter",
+      "question": "Quel widget est souvent utilisé pour une carte UI ?",
+      "options": ["Card", "ClipPath", "ShaderMask", "IntrinsicHeight"],
+      "correctIndex": 0,
+      "explanation": "Card est utilisé pour des blocs UI."
+    },
+    {
+      "id": "99",
+      "category": "Général",
+      "question": "Combien font 5 + 0 ?",
+      "options": ["0", "5", "10", "50"],
+      "correctIndex": 1,
+      "explanation": "5 + 0 = 5."
+    },
+    {
+      "id": "100",
+      "category": "Général",
+      "question": "Quel est l’objectif d’un quiz ?",
+      "options": ["Dormir", "Évaluer des connaissances", "Changer l’IP", "Supprimer des fichiers"],
+      "correctIndex": 1,
+      "explanation": "Un quiz sert à évaluer/apprendre des connaissances."
+    }
+  ]
+}

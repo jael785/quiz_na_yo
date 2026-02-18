@@ -1,0 +1,71 @@
+name: quiz_na_yo
+description: Quiz Na Yo - application quiz éducatif (Firebase + Google Auth)
+publish_to: "none"
+version: 1.0.0+1
+
+# ✅ Dart 3.11.0 (Flutter 3.41.1)
+environment:
+  sdk: ">=3.11.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # (Optionnel mais courant)
+  cupertino_icons: ^1.0.8
+
+  # Firebase core + Auth
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+
+  # Google provider
+  google_sign_in: ^6.2.1
+
+  # State management
+  provider: ^6.1.2
+
+  # Shimmer effect
+  shimmer: ^3.0.0
+
+  # Bouton Google avec branding
+  sign_in_button: ^3.2.0
+
+  # ✅ API REST (si tu fais des appels HTTP)
+  http: ^1.2.2
+  cloud_firestore: ^5.6.12
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # ✅ Génération icône launcher
+  flutter_launcher_icons: ^0.13.1
+
+  # ✅ Génération splash screen
+  flutter_native_splash: ^2.4.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    # ✅ Logo
+    - assets/images/quiz_na_yo_logo.png
+
+    # ✅ Questions offline (Étape 1)
+    - assets/data/questions.json
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/quiz_na_yo_logo.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/quiz_na_yo_logo.png"
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "assets/images/quiz_na_yo_logo.png"
+  android: true
+  ios: true
+  android_12:
+    color: "#FFFFFF"
+    image: "assets/images/quiz_na_yo_logo.png"

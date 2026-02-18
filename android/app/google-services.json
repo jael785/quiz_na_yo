@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1092257762850",
+    "project_id": "quiz-na-yo-3d55d",
+    "storage_bucket": "quiz-na-yo-3d55d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092257762850:android:ffa06ccf2faeaf33ff447b",
+        "android_client_info": {
+          "package_name": "com.example.quiz_na_yo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092257762850-m840adb8jt9d8o51mvk6p5dkrbkdordj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8G0Z0n8AQ_CtSltAHLIEfG6nAKD2sjs8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092257762850-m840adb8jt9d8o51mvk6p5dkrbkdordj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
