@@ -9,9 +9,7 @@ class AuthService {
 
   User? getCurrentUser() => _auth.currentUser;
 
-  // -------------------------
-  // GOOGLE SIGN-IN (Web + Mobile)
-  // -------------------------
+ 
   Future<UserCredential> signInWithGoogle() async {
     try {
       if (kIsWeb) {
