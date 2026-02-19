@@ -3,10 +3,7 @@ import 'package:flutter/foundation.dart';
 
 import '../services/firestore_service.dart';
 
-/// KPIs live (Solution A):
-/// - total quizzes = count de scores (historique)
-/// - best score user = leaderboard/{uid}
-/// - rank user = scan leaderboard top N
+
 class DashboardProvider extends ChangeNotifier {
   final FirestoreService _firestore;
 
