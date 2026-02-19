@@ -104,7 +104,6 @@ class AuthProvider extends ChangeNotifier {
     } on TimeoutException {
       _error = "Connexion trop longue. Réessaie (vérifie Internet).";
     } catch (e) {
-      // ✅ Message plus propre pour FirebaseAuthException (si jamais controller renvoie brut)
       _error = _cleanError(e.toString());
     } finally {
       _loading = false;
