@@ -16,7 +16,7 @@ class GateScreen extends StatelessWidget {
   const GateScreen({super.key});
 
   // ✅ Admin UID (ton UID)
-  static const String adminUid = "MHTmzVqu78YC7FFK44XSPfBQ7G52";
+  static const String adminUid = "FXwSguoqMaXWdSnORbH2QoI9Atk1";
 
   bool _isAdmin(String uid) => uid == adminUid;
 

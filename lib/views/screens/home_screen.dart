@@ -31,7 +31,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   // ✅ admin UID (comme dans tes rules)
-  static const String _adminUid = "MHTmzVqu78YC7FFK44XSPfBQ7G52";
+  static const String _adminUid = "FXwSguoqMaXWdSnORbH2QoI9Atk1";
 
   int _selectedIndex = 0;
 
