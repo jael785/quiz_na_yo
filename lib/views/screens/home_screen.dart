@@ -20,7 +20,6 @@ import 'admin/admin_home_screen.dart';
 
 /// HomeScreen complet:
 /// - ✅ Admin => AdminHomeScreen direct
-/// - ✅ User => Home + 3 modes Quiz (API / Local / Firestore admin)
 /// - ✅ Firestore mode : choix catégorie (optionnel) + active categories/questions
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
