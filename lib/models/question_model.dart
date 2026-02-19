@@ -15,7 +15,7 @@ class QuestionModel {
     required this.explanation,
   });
 
-  /// Création depuis JSON (sécurisée)
+
   factory QuestionModel.fromJson(Map<String, dynamic> json) {
     final rawOptions = (json['options'] as List?) ?? const [];
     final options = rawOptions
