@@ -5,8 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/question_model.dart';
 
-/// Service REST OpenTDB.
-/// Convertit les résultats en List<QuestionModel> + nettoie les données.
+
 class ApiService {
   static const String _baseUrl = "https://opentdb.com/api.php";
 

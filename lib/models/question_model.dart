@@ -55,11 +55,7 @@ class QuestionModel {
     );
   }
 
-  /// ✅ Création depuis Firestore (sécurisée + mapping des champs admin)
-  /// Admin écrit:
-  /// - categoryName, question, options, correctIndex, explanation, active, difficulty...
-  /// On map vers:
-  /// - id (docId), category (categoryName), etc.
+
   factory QuestionModel.fromFirestore({
     required String docId,
     required Map<String, dynamic> data,
