@@ -84,7 +84,6 @@ class ApiService {
             .where((s) => s.isNotEmpty)
             .toList();
 
-        // ✅ enlever doublons (en gardant l’ordre)
         final unique = <String>[];
         for (final o in options) {
           if (!unique.contains(o)) unique.add(o);
