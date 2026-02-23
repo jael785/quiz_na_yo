@@ -68,9 +68,6 @@ class ApiService {
         final correct =
         _decodeHtml((q["correct_answer"] ?? "").toString()).trim();
 
-        // ✅ Si une question est invalide, on la skip
-        ///jfnfhiojeijiejf
-        //JFHIOFJEJJ
      
         if (questionText.isEmpty || correct.isEmpty) {
           continue;
