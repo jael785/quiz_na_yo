@@ -79,7 +79,6 @@ class ApiService {
             .where((s) => s.isNotEmpty)
             .toList();
 
-        // Construire options (incorrect + correct)
         final options = <String>[...incorrect, correct]
             .map((s) => s.trim())
             .where((s) => s.isNotEmpty)
