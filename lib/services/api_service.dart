@@ -94,7 +94,6 @@ class ApiService {
           if (!unique.contains(o)) unique.add(o);
         }
 
-        // ✅ vérifier qu’on a assez d’options
         if (unique.length < 2) {
           continue;
         }
