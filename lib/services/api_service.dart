@@ -61,7 +61,7 @@ class ApiService {
 
         final categoryName =
         _decodeHtml((q["category"] ?? "Général").toString()).trim();
-
+ 
         final questionText =
         _decodeHtml((q["question"] ?? "").toString()).trim();
 
