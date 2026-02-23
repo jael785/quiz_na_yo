@@ -21,7 +21,7 @@ class AuthService {
         final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
         if (googleUser == null) {
-          // Annulation utilisateur (pas une erreur technique)
+          
           throw AuthFailure("Connexion Google annulée.");
         }
 

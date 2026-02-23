@@ -20,7 +20,7 @@ class ApiService {
   Future<List<QuestionModel>> fetchQuestions({
     int? amount,
     int? category,
-    String? difficulty, // easy | medium | hard
+    String? difficulty, 
   }) async {
     final a = amount ?? defaultAmount;
 
