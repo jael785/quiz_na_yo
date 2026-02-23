@@ -71,9 +71,7 @@ class ApiService {
         // ✅ Si une question est invalide, on la skip
         ///jfnfhiojeijiejf
         //JFHIOFJEJJ
-        //UHUJFIJIEF//
-        //JNEIFJE
-        //JNFJRJOI
+     
         if (questionText.isEmpty || correct.isEmpty) {
           continue;
         }
@@ -98,7 +96,14 @@ class ApiService {
           continue;
         }
 
-        // ✅ mélanger (mais garder correctIndex cohérent)
+        //  mélanger (mais garder correctIndex cohérent) jndijidj
+        // JNDCJVKJ JNVJRI 
+        //RJVNJVRNKR
+        //HJCNJIRJKOR
+        //JNVJNKV
+        //JEJFHUIHE EGFUIEHFUIHU
+        // VGDRYTYRT
+
         unique.shuffle();
 
         final correctIndex = unique.indexOf(correct);
