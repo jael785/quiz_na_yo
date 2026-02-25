@@ -192,12 +192,7 @@ class FirestoreService {
     await _categories.doc(id).delete();
   }
 
-  // ---------------------------------------------------------------------------
-  // ✅ USER: CATEGORIES visibles (actives)
-  // ---------------------------------------------------------------------------
-  /// IMPORTANT:
-  /// - Certains anciens docs peuvent ne pas avoir "active"
-  /// - Donc on fait un fallback: (active ?? true)
+  
   Stream<List<Map<String, dynamic>>> streamActiveCategories() {
     return _categories
         .orderBy('name', descending: false)
@@ -226,9 +221,7 @@ class FirestoreService {
     return out;
   }
 
-  // ---------------------------------------------------------------------------
-  // ADMIN CRUD: QUESTIONS
-  // ---------------------------------------------------------------------------
+
   Stream<List<Map<String, dynamic>>> streamQuestions({int limit = 300}) {
     return _questions
         .orderBy('updatedAt', descending: true)
@@ -289,18 +282,12 @@ class FirestoreService {
     await _questions.doc(id).delete();
   }
 
-  // ---------------------------------------------------------------------------
-  // ✅ USER QUIZ: lire les questions créées par l'admin
-  // ---------------------------------------------------------------------------
   Future<List<QuestionModel>> fetchActiveQuestions({
     int limit = 30,
     String? categoryId,
     String? difficulty,
   }) async {
-    // ⚠️ Problème classique : si certains docs n'ont pas "active",
-    // where(active==true) retourne 0 résultats pour ces docs.
-    // -> On garde ta logique, mais on la rend robuste:
-    //    On n'utilise PAS where('active'==true) et on filtre côté client.
+  
     Query<Map<String, dynamic>> q = _questions;
 
     if (categoryId != null && categoryId.trim().isNotEmpty) {
@@ -311,7 +298,7 @@ class FirestoreService {
       q = q.where('difficulty', isEqualTo: difficulty.trim());
     }
 
-    // Tri + limit
+   
     q = q.orderBy('updatedAt', descending: true).limit(limit);
 
     final snap = await q.get();
@@ -320,7 +307,7 @@ class FirestoreService {
     for (final doc in snap.docs) {
       final data = doc.data();
 
-      // ✅ fallback si champ absent
+      
       final isActive = (data['active'] ?? true) as bool;
       if (!isActive) continue;
 
@@ -335,9 +322,7 @@ class FirestoreService {
     return out;
   }
 
-  // ---------------------------------------------------------------------------
-  // Helpers
-  // ---------------------------------------------------------------------------
+  
   int _asInt(dynamic v) {
     if (v is int) return v;
     if (v is double) return v.toInt();
