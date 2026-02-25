@@ -17,9 +17,7 @@ class FirestoreService {
   CollectionReference<Map<String, dynamic>> get _questions => _db.collection('questions');
   CollectionReference<Map<String, dynamic>> get _categories => _db.collection('categories');
 
-  // ---------------------------------------------------------------------------
-  // USERS
-  // ---------------------------------------------------------------------------
+  
   Future<void> upsertUser(UserModel user) async {
     final ref = _users.doc(user.uid);
     final snap = await ref.get();
@@ -165,9 +163,7 @@ class FirestoreService {
     await upsertLeaderboardBest(entry);
   }
 
-  // ---------------------------------------------------------------------------
-  // ADMIN CRUD: CATEGORIES
-  // ---------------------------------------------------------------------------
+
   Stream<List<Map<String, dynamic>>> streamCategories() {
     return _categories
         .orderBy('name', descending: false)
