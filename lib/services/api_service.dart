@@ -20,7 +20,7 @@ class ApiService {
   Future<List<QuestionModel>> fetchQuestions({
     int? amount,
     int? category,
-    String? difficulty, // easy | medium | hard
+    String? difficulty, 
   }) async {
     final a = amount ?? defaultAmount;
 
@@ -61,14 +61,14 @@ class ApiService {
 
         final categoryName =
         _decodeHtml((q["category"] ?? "Général").toString()).trim();
-
+ 
         final questionText =
         _decodeHtml((q["question"] ?? "").toString()).trim();
 
         final correct =
         _decodeHtml((q["correct_answer"] ?? "").toString()).trim();
 
-        // ✅ Si une question est invalide, on la skip
+     
         if (questionText.isEmpty || correct.isEmpty) {
           continue;
         }
@@ -79,24 +79,28 @@ class ApiService {
             .where((s) => s.isNotEmpty)
             .toList();
 
-        // Construire options (incorrect + correct)
         final options = <String>[...incorrect, correct]
             .map((s) => s.trim())
             .where((s) => s.isNotEmpty)
             .toList();
 
-        // ✅ enlever doublons (en gardant l’ordre)
         final unique = <String>[];
         for (final o in options) {
           if (!unique.contains(o)) unique.add(o);
         }
 
-        // ✅ vérifier qu’on a assez d’options
         if (unique.length < 2) {
           continue;
         }
 
-        // ✅ mélanger (mais garder correctIndex cohérent)
+        //  mélanger (mais garder correctIndex cohérent) jndijidj
+        // JNDCJVKJ JNVJRI 
+        //RJVNJVRNKR
+        //HJCNJIRJKOR
+        //JNVJNKV
+        //JEJFHUIHE EGFUIEHFUIHU
+        // VGDRYTYRT
+
         unique.shuffle();
 
         final correctIndex = unique.indexOf(correct);
