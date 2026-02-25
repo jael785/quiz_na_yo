@@ -93,19 +93,13 @@ class ApiService {
           continue;
         }
 
-        //  mélanger (mais garder correctIndex cohérent) jndijidj
-        // JNDCJVKJ JNVJRI 
-        //RJVNJVRNKR
-        //HJCNJIRJKOR
-        //JNVJNKV
-        //JEJFHUIHE EGFUIEHFUIHU
-        // VGDRYTYRT
+       
 
         unique.shuffle();
 
         final correctIndex = unique.indexOf(correct);
         if (correctIndex < 0) {
-          // bizarre: correct disparu (ex: doublon nettoyé)
+          
           continue;
         }
 
@@ -121,7 +115,7 @@ class ApiService {
         );
       }
 
-      // ✅ si après nettoyage on n’a rien -> renvoyer []
+  
       return out;
     } on TimeoutException {
       throw Exception("Connexion trop lente (timeout). Vérifie Internet.");
@@ -130,7 +124,7 @@ class ApiService {
     }
   }
 
-  /// Decode HTML entities (OpenTDB renvoie des entités)
+  
   String _decodeHtml(String s) {
     if (s.isEmpty) return s;
 
